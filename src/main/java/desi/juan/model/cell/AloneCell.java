@@ -1,6 +1,6 @@
 package desi.juan.model.cell;
 
-import desi.juan.model.Game;
+import desi.juan.model.DefaultGame;
 import desi.juan.model.Position;
 
 public class AloneCell extends UnrevealedCell implements Cell {
@@ -15,11 +15,11 @@ public class AloneCell extends UnrevealedCell implements Cell {
   }
 
   @Override
-  public Game reveal(Game game) {
+  public DefaultGame reveal(DefaultGame game) {
     Position position = getPosition();
     Cell[][] grid = game.getGrid();
     grid[position.getX()][position.getY()] = new RevealedCell(this);
-    Game mutatedGame = new Game(grid);
+    DefaultGame mutatedGame = new DefaultGame(game.getId(), grid);
     for (Position p : position.getAdjacentPositions()) {
       if (mutatedGame.isValidPosition(p)) {
         Cell cell = game.getGrid()[p.getX()][p.getY()];

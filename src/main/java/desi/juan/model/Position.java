@@ -47,4 +47,9 @@ public class Position {
   public int hashCode() {
     return Objects.hashCode(this);
   }
+
+  @Override
+  public String toString() {
+    return "[" + x + ", " + y + "]";
+  }
 }

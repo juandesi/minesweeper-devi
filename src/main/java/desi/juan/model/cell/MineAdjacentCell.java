@@ -1,6 +1,6 @@
 package desi.juan.model.cell;
 
-import desi.juan.model.Game;
+import desi.juan.model.DefaultGame;
 import desi.juan.model.Position;
 
 public class MineAdjacentCell extends UnrevealedCell implements Cell {
@@ -21,11 +21,11 @@ public class MineAdjacentCell extends UnrevealedCell implements Cell {
   }
 
   @Override
-  public Game reveal(Game game) {
+  public DefaultGame reveal(DefaultGame game) {
     Cell[][] grid = game.getGrid();
     Position position = getPosition();
     grid[position.getX()][position.getY()] = new RevealedCell(this);
-    return new Game(grid);
+    return new DefaultGame(game.getId(), grid);
   }
 
 }

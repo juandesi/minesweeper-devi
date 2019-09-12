@@ -1,64 +1,26 @@
 package desi.juan.model;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import desi.juan.model.cell.Cell;
 
-public class Game {
+public interface Game {
 
-  private final Cell[][] grid;
+  boolean isFinished();
 
-  public Game(Cell[][] grid) {
-    this.grid = grid;
-  }
+  Game revealCell(int x, int y);
 
-  public Game revealCell(int x, int y) {
-    Game result = grid[x][y].reveal(this);
-    if (result.isSolved()) {
-      // do something when the game is finished!
-      return result;
-    }
-    return result;
-  }
+  Cell getCell(int x, int y);
 
-  public Cell getCell(int x, int y) {
-    return grid[x][y];
-  }
+  boolean isValidPosition(Position position);
 
-  public boolean isValidPosition(Position position) {
-    Integer x = position.getX();
-    Integer y = position.getY();
-    return x >= 0 && x < grid.length && y < grid[0].length && y >= 0;
-  }
+  List<Cell> getAllCells();
 
-  public List<Cell> getAllCells() {
-    List<Cell> cells = new ArrayList<>();
-    for (Cell[] rows : grid) {
-      cells.addAll(Arrays.asList(rows));
-    }
-    return cells;
-  }
+  boolean isSolved();
 
-  public boolean isSolved() {
-    return getAllCells().stream().noneMatch(Cell::isHidden);
-  }
+  Cell[][] getGrid();
 
-  public Cell[][] getGrid() {
-    return grid.clone();
-  }
+  String print();
 
-  public String print() {
-    StringBuilder builder = new StringBuilder();
-    for (int x = 0; x < grid.length; x++) {
-      builder.append("|");
-      for (int y = 0; y < grid[x].length; y++) {
-        Cell cell = grid[x][y];
-        builder.append(cell.print()).append("|");
-      }
-      builder.append("\n");
-    }
-    return builder.toString();
-  }
+  String getId();
 }

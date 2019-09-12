@@ -16,7 +16,7 @@ public class GameFactory {
   private static final int MINES_NUM = 10;
   private static final Random RANDOM = new Random();
 
-  public Game create(Level level) {
+  public DefaultGame create(String id, Level level) {
     int multiplier = level.getMultiplier();
     int width = GRID_WIDTH * multiplier;
     int height = GRID_HEIGHT * multiplier;
@@ -36,7 +36,7 @@ public class GameFactory {
         }
       }
     }
-    return new Game(grid);
+    return new DefaultGame(id, grid);
   }
 
   private byte countAdjacentMines(Position position, List<Position> mineLocations) {

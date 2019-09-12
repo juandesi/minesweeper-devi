@@ -1,6 +1,6 @@
 package desi.juan.model.cell;
 
-import desi.juan.model.Game;
+import desi.juan.model.DefaultGame;
 import desi.juan.model.Position;
 
 public interface Cell {
@@ -9,7 +9,7 @@ public interface Cell {
 
   String getSymbol();
 
-  Game reveal(Game game);
+  DefaultGame reveal(DefaultGame game);
 
   String print();
 

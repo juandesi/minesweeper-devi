@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import desi.juan.model.DefaultGame;
 import desi.juan.model.Game;
 import desi.juan.model.Position;
 import desi.juan.model.cell.AloneCell;
@@ -18,8 +19,11 @@ import org.junit.rules.ExpectedException;
 
 public class GameTestCase {
 
+  private static final String id = "noId";
+
   @Rule
   public ExpectedException expectedException = ExpectedException.none();
+
 
   @Test
   public void hitAloneCell() {
@@ -29,7 +33,7 @@ public class GameTestCase {
     testGrid[1][0] = new MineAdjacentCell(((byte) 1), new Position(1, 0));
     testGrid[0][1] = new MineAdjacentCell(((byte) 1), new Position(0, 1));
 
-    Game game = new Game(testGrid);
+    DefaultGame game = new DefaultGame(id, testGrid);
     Game newGameStatus = game.revealCell(5, 5);
 
     assertRevealedCell(newGameStatus.getCell(5, 5), " ");
@@ -52,7 +56,7 @@ public class GameTestCase {
 
     Cell[][] testGrid = createTestGrid();
     testGrid[5][5] = new Mine(new Position(5, 5));
-    new Game(testGrid).revealCell(5, 5);
+    new DefaultGame(id, testGrid).revealCell(5, 5);
   }
 
   @Test
@@ -63,7 +67,7 @@ public class GameTestCase {
     testGrid[1][0] = new MineAdjacentCell(((byte) 1), new Position(1, 0));
     testGrid[0][1] = new MineAdjacentCell(((byte) 1), new Position(0, 1));
 
-    Game game = new Game(testGrid);
+    DefaultGame game = new DefaultGame(id, testGrid);
     Game newGameStatus = game.revealCell(1, 1);
 
     assertRevealedCell(newGameStatus.getCell(1, 1), "1");

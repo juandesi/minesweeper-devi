@@ -1,6 +1,6 @@
 package desi.juan.model.cell;
 
-import desi.juan.model.Game;
+import desi.juan.model.DefaultGame;
 import desi.juan.model.Position;
 import desi.juan.model.error.RevealedMineException;
 
@@ -16,7 +16,7 @@ public class Mine extends UnrevealedCell implements Cell {
   }
 
   @Override
-  public Game reveal(Game game) {
+  public DefaultGame reveal(DefaultGame game) {
     throw new RevealedMineException("A Mine has exploded, you lose the game");
   }
 }

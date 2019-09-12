@@ -1,6 +1,6 @@
 package desi.juan.model.cell;
 
-import desi.juan.model.Game;
+import desi.juan.model.DefaultGame;
 import desi.juan.model.Position;
 
 public class RevealedCell implements Cell {
@@ -22,7 +22,7 @@ public class RevealedCell implements Cell {
   }
 
   @Override
-  public Game reveal(Game game) {
+  public DefaultGame reveal(DefaultGame game) {
     // does nothing
     return game;
   }
