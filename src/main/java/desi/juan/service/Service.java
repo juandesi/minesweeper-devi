@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class Service {
 
+  private static final GameSerializer serializer = new GameSerializer();
   private static final GameFactory factory = new GameFactory();
   private static final IdProvider ID_PROVIDER = IdProvider.get();
 
@@ -66,8 +67,12 @@ public class Service {
   }
 
   @RequestMapping(value = "/game/{id}/save", method = POST)
-  public String save() {
-    String id = ID_PROVIDER.nextGameId();
-    return id;
+  public ResponseEntity<Object> save(@PathVariable String id) {
+    Game game = games.get(id);
+    if (game == null) {
+      return ResponseEntity.notFound().build();
+    }
+    String serialized = serializer.serialize(game);
+    return ResponseEntity.ok("Game id [" + id + "] saved correctly");
   }
 }
