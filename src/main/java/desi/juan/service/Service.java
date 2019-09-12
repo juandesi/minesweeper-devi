@@ -11,6 +11,7 @@ import desi.juan.model.Game;
 import desi.juan.model.GameFactory;
 import desi.juan.model.Level;
 import desi.juan.model.Position;
+import desi.juan.persistence.MongoAdapter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,15 +22,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class Service {
 
+  private static final MongoAdapter db = new MongoAdapter();
   private static final GameSerializer serializer = new GameSerializer();
   private static final GameFactory factory = new GameFactory();
-  private static final IdProvider ID_PROVIDER = IdProvider.get();
 
   private final Map<String, Game> games = new ConcurrentHashMap<>();
 
   @RequestMapping(value = "/game", method = POST)
   public String newGame(@RequestParam(required = false) Level level) {
-    String id = ID_PROVIDER.nextGameId();
+    String id = db.getNextId().toString();
     games.put(id, factory.create(id, level == null ? Level.EASY : level));
     return id;
   }
@@ -73,6 +74,7 @@ public class Service {
       return ResponseEntity.notFound().build();
     }
     String serialized = serializer.serialize(game);
+    db.saveGame(serialized);
     return ResponseEntity.ok("Game id [" + id + "] saved correctly");
   }
 }
