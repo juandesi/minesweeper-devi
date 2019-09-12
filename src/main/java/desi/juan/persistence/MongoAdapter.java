@@ -2,9 +2,12 @@ package desi.juan.persistence;
 
 import static java.util.Arrays.asList;
 
+import java.util.Optional;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import desi.juan.model.Game;
 import org.bson.Document;
@@ -33,10 +36,12 @@ public class MongoAdapter {
     games.insertOne(Document.parse(game));
   }
 
-  public Game retrieveGame(String id) {
-    MongoCollection<Document> games = getGames();
-    games.find();
-    return null;
+  public Optional<String> retrieveGame(Integer id) {
+    Document found = getGames().find(new BasicDBObject("id", id)).first();
+    if (found == null) {
+      return Optional.empty();
+    }
+    return Optional.of(found.toJson());
   }
 
   private MongoCollection<Document> getGames() {
