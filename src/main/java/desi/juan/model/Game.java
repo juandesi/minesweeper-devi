@@ -8,10 +8,10 @@ import desi.juan.model.cell.Cell;
 
 public abstract class Game {
 
-  protected final String id;
+  protected final int id;
   protected final Cell[][] grid;
 
-  public Game(String id, Cell[][] grid) {
+  public Game(int id, Cell[][] grid) {
     this.id = id;
     this.grid = grid;
   }
@@ -59,7 +59,7 @@ public abstract class Game {
     return builder.toString();
   }
 
-  public String getId() {
+  public int getId() {
     return id;
   }
 }

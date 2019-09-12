@@ -24,7 +24,7 @@ import org.junit.Test;
 public class GameSerializerTestCase {
 
   private GameSerializer serializer = new GameSerializer(true);
-  private Game game = new DefaultGame("id", initCells());
+  private Game game = new DefaultGame(1, initCells());
   private Game finished = new FinishedGame(game);
 
   @Test

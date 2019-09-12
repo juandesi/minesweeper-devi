@@ -2,10 +2,8 @@ package desi.juan.persistence;
 
 import static java.util.Arrays.asList;
 
-import java.util.Arrays;
-
+import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
-import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import desi.juan.model.Game;
@@ -22,16 +20,12 @@ public class MongoAdapter {
   }
 
   public Integer getNextId() {
-    try {
-      String max = getGames().aggregate(asList(new Document("$group", new Document("_id", null)
-        .append("max", new Document("$max", "$id")))))
-        .first().getString("max");
-      Integer nextId = Integer.parseInt(max) + 1;
-      return nextId;
-    } catch (Exception e) {
-      // case we started from scratch
-      return 0;
-    }
+      Document first = getGames().find(new BasicDBObject()).sort(new BasicDBObject("id", -1)).first();
+      if (first == null) {
+        return 0;
+      }
+      Integer max = first.getInteger("id");
+      return max + 1;
   }
 
   public void saveGame(String game) {

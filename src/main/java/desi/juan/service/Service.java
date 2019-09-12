@@ -7,6 +7,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import desi.juan.model.DefaultGame;
 import desi.juan.model.Game;
 import desi.juan.model.GameFactory;
 import desi.juan.model.Level;
@@ -30,18 +31,20 @@ public class Service {
 
   @RequestMapping(value = "/game", method = POST)
   public String newGame(@RequestParam(required = false) Level level) {
-    String id = db.getNextId().toString();
-    games.put(id, factory.create(id, level == null ? Level.EASY : level));
-    return id;
+    Integer id = db.getNextId();
+    DefaultGame game = factory.create(id, level == null ? Level.EASY : level);
+    games.put(id.toString(), game);
+    db.saveGame(serializer.serialize(game));
+    return id.toString();
   }
 
   @RequestMapping(value = "/game/{id}", method = GET)
-  public ResponseEntity<Game> getGame(@PathVariable String id) {
+  public ResponseEntity<Object> getGame(@PathVariable String id) {
     Game game = games.get(id);
     if (game == null) {
       return ResponseEntity.notFound().build();
     }
-    return ResponseEntity.ok(game);
+    return ResponseEntity.ok(serializer.serialize(game));
   }
 
   @RequestMapping(value = "/game/{id}/view", method = GET)
@@ -63,7 +66,7 @@ public class Service {
       return ResponseEntity.badRequest().body("There is no cell at " + position.toString());
     }
     Game result = game.revealCell(position.getX(), position.getY());
-    games.put(game.getId(), result);
+    games.put(game.getId() + "", result);
     return ResponseEntity.ok("Cell at " + position + " has been revealed successfully");
   }
 

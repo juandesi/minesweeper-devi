@@ -19,7 +19,7 @@ import org.junit.rules.ExpectedException;
 
 public class GameTestCase {
 
-  private static final String id = "noId";
+  private static final Integer id = 1;
 
   @Rule
   public ExpectedException expectedException = ExpectedException.none();

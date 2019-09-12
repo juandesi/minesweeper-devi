@@ -16,7 +16,7 @@ public class GameFactory {
   private static final int MINES_NUM = 10;
   private static final Random RANDOM = new Random();
 
-  public DefaultGame create(String id, Level level) {
+  public DefaultGame create(Integer id, Level level) {
     int multiplier = level.getMultiplier();
     int width = GRID_WIDTH * multiplier;
     int height = GRID_HEIGHT * multiplier;

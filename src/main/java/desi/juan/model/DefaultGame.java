@@ -8,7 +8,7 @@ import desi.juan.model.cell.Cell;
 
 public class DefaultGame extends Game {
 
-  public DefaultGame(String id, Cell[][] grid) {
+  public DefaultGame(int id, Cell[][] grid) {
     super(id, grid);
   }
 
