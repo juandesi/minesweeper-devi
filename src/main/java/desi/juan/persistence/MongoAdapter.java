@@ -13,7 +13,7 @@ public class MongoAdapter {
   private final MongoClient client;
 
   public MongoAdapter() {
-    String connectionString = System.getProperty("mongo.juan.desi");
+    String connectionString = System.getenv().get("mongo.juan.desi");
     final MongoClientURI mongoClientURI = new MongoClientURI(connectionString);
     this.client = new MongoClient(mongoClientURI);
   }
