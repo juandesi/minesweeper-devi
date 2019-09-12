@@ -1,15 +1,11 @@
 package desi.juan.persistence;
 
-import static java.util.Arrays.asList;
-
 import java.util.Optional;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
-import desi.juan.model.Game;
 import org.bson.Document;
 
 public class MongoAdapter {

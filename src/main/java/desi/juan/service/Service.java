@@ -40,22 +40,19 @@ public class Service {
     return id.toString();
   }
 
-  @RequestMapping(value = "/game/{id}", method = GET)
-  @ResponseBody
+  @RequestMapping(value = "/game/{id}", method = GET, produces = "application/json")
   public ResponseEntity<Object> getGame(@PathVariable Integer id) {
-    Optional<ResponseEntity<String>> result = getOptionalGame(id).map(game -> ResponseEntity.ok(serializer.serialize(game)));
+    Optional<String> result = getOptionalGame(id).map(game -> serializer.serialize(game));
     return result.isPresent() ? ResponseEntity.ok(result.get()) : ResponseEntity.notFound().build();
   }
 
   @RequestMapping(value = "/game/{id}/view", method = GET)
-  @ResponseBody
   public ResponseEntity<String> getGameView(@PathVariable Integer id) {
     Optional<Game> result = getOptionalGame(id);
     return result.isPresent() ? ResponseEntity.ok(result.get().print()) : ResponseEntity.notFound().build();
   }
 
   @RequestMapping(value = "/game/{id}/reveal", method = PUT)
-  @ResponseBody
   public ResponseEntity<String> reveal(@PathVariable Integer id, @RequestBody Position position) {
     Game game = games.get(id);
     if (game == null) {
