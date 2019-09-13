@@ -1,4 +1,4 @@
-package desi.juan.service;
+package desi.juan.persistence;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

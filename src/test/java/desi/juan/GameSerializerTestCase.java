@@ -17,7 +17,7 @@ import desi.juan.model.Position;
 import desi.juan.model.cell.Cell;
 import desi.juan.model.cell.Mine;
 import desi.juan.model.cell.MineAdjacentCell;
-import desi.juan.service.GameSerializer;
+import desi.juan.persistence.GameSerializer;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 

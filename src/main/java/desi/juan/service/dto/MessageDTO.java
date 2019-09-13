@@ -1,4 +1,4 @@
-package desi.juan.service;
+package desi.juan.service.dto;
 
 public class MessageDTO {
 
