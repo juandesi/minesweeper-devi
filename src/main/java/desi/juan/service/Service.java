@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+import desi.juan.Application;
 import desi.juan.model.DefaultGame;
 import desi.juan.model.Game;
 import desi.juan.model.GameFactory;
@@ -16,6 +17,7 @@ import desi.juan.model.Position;
 import desi.juan.persistence.GameSerializer;
 import desi.juan.persistence.MongoAdapter;
 import desi.juan.service.dto.MessageDTO;
+import org.springframework.boot.SpringApplication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -58,18 +60,18 @@ public class Service {
     return result.isPresent() ? ResponseEntity.ok(result.get().print()) : ResponseEntity.notFound().build();
   }
 
-  @RequestMapping(value = "/games/{id}/reveal", method = PUT, produces = "application/json")
+  @RequestMapping(value = "/games/{id}/reveal", method = PUT, produces = "application/json", consumes = "application/json")
   public ResponseEntity<Object> reveal(@PathVariable Integer id, @RequestBody Position position) {
-    Game game = games.get(id);
-    if (game == null) {
+    Optional<Game> game = getOptionalGame(id);
+    if (!game.isPresent()) {
       return ResponseEntity.notFound().build();
     }
-    if (!game.isValidPosition(position)) {
+    if (!game.get().isValidPosition(position)) {
       return ResponseEntity.badRequest().body(new MessageDTO("There is no cell at " + position.toString()));
     }
-    Game result = game.revealCell(position.getX(), position.getY());
-    games.put(game.getId(), result);
-    db.updateGame(game);
+    Game result = game.get().revealCell(position.getX(), position.getY());
+    games.put(id, result);
+    db.updateGame(result);
     return ResponseEntity.ok(new MessageDTO("Cell at " + position + " has been revealed successfully"));
   }
 
