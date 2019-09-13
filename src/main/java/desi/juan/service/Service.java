@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -31,12 +30,12 @@ public class Service {
 
   private final Map<Integer, Game> games = new ConcurrentHashMap<>();
 
-  @RequestMapping(value = "/games", method = GET)
+  @RequestMapping(value = "/games", method = GET, produces = "application/json")
   public ResponseEntity<Object> getGames() {
     return ResponseEntity.notFound().build();
   }
 
-  @RequestMapping(value = "/games", method = POST)
+  @RequestMapping(value = "/games", method = POST, produces = "application/json")
   public String newGame(@RequestParam(required = false) Level level) {
     Integer id = db.getNextId();
     DefaultGame game = factory.create(id, level == null ? Level.EASY : level);
@@ -57,18 +56,18 @@ public class Service {
     return result.isPresent() ? ResponseEntity.ok(result.get().print()) : ResponseEntity.notFound().build();
   }
 
-  @RequestMapping(value = "/games/{id}/reveal", method = PUT)
-  public ResponseEntity<String> reveal(@PathVariable Integer id, @RequestBody Position position) {
+  @RequestMapping(value = "/games/{id}/reveal", method = PUT, produces = "application/json")
+  public ResponseEntity<Object> reveal(@PathVariable Integer id, @RequestBody Position position) {
     Game game = games.get(id);
     if (game == null) {
       return ResponseEntity.notFound().build();
     }
     if (!game.isValidPosition(position)) {
-      return ResponseEntity.badRequest().body("There is no cell at " + position.toString());
+      return ResponseEntity.badRequest().body(new MessageDTO("There is no cell at " + position.toString()));
     }
     Game result = game.revealCell(position.getX(), position.getY());
     games.put(game.getId(), result);
-    return ResponseEntity.ok("Cell at " + position + " has been revealed successfully");
+    return ResponseEntity.ok(new MessageDTO("Cell at " + position + " has been revealed successfully"));
   }
 
   private Optional<Game> getOptionalGame(Integer id) {
