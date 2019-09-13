@@ -1,5 +1,7 @@
 package desi.juan.persistence;
 
+import java.util.List;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
@@ -40,6 +42,11 @@ public class GameSerializer {
   public String serialize(Game game) {
     Gson gson = getGson();
     return gson.toJson(game, Game.class);
+  }
+
+  public String serialize(List<Game> game) {
+    Gson gson = getGson();
+    return gson.toJson(game, List.class);
   }
 
   public Game deserialize(String content) {

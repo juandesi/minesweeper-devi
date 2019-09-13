@@ -53,11 +53,11 @@ public class MongoAdapter {
     return Optional.of(serializer.deserialize(found.toJson()));
   }
 
-  public List<String> getAllGames() {
+  public List<Game> getAllGames() {
     // should be paginated
-    List<String> array = new ArrayList<>();
+    List<Game> array = new ArrayList<>();
     for (String game : getGames().find().map(e -> e.toJson())) {
-      array.add(game);
+      array.add(serializer.deserialize(game));
     }
     return array;
   }

@@ -36,7 +36,7 @@ public class Service {
 
   @RequestMapping(value = "/games", method = GET, produces = "application/json")
   public ResponseEntity<Object> getGames() {
-    return ResponseEntity.ok(db.getAllGames());
+    return ResponseEntity.ok(serializer.serialize(db.getAllGames()));
   }
 
   @RequestMapping(value = "/games", method = POST, produces = "application/json")
@@ -70,8 +70,17 @@ public class Service {
       return ResponseEntity.badRequest().body(new MessageDTO("There is no cell at " + position.toString()));
     }
     Game result = game.get().revealCell(position.getX(), position.getY());
+    if (result == game.get()) {
+      return ResponseEntity.ok(new MessageDTO("Cell at " + position + " is already revealed"));
+    }
     games.put(id, result);
     db.updateGame(result);
+    if (result.isFinished()) {
+      if (result.isSolved()) {
+        return ResponseEntity.ok(new MessageDTO("You won the game!"));
+      }
+      return ResponseEntity.ok(new MessageDTO("Cell at " + position + " has exploded, You lose. Game is finished"));
+    }
     return ResponseEntity.ok(new MessageDTO("Cell at " + position + " has been revealed successfully"));
   }
 

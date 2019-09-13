@@ -5,6 +5,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import desi.juan.model.DefaultGame;
+import desi.juan.model.FinishedGame;
 import desi.juan.model.Game;
 import desi.juan.model.Position;
 import desi.juan.model.cell.AloneCell;
@@ -23,7 +24,6 @@ public class GameTestCase {
 
   @Rule
   public ExpectedException expectedException = ExpectedException.none();
-
 
   @Test
   public void hitAloneCell() {
@@ -52,11 +52,13 @@ public class GameTestCase {
 
   @Test
   public void hitMine() {
-    expectedException.expect(RevealedMineException.class);
-
     Cell[][] testGrid = createTestGrid();
     testGrid[5][5] = new Mine(new Position(5, 5));
-    new DefaultGame(id, testGrid).revealCell(5, 5);
+    Game result = new DefaultGame(id, testGrid).revealCell(5, 5);
+
+    assertRevealedCell(result.getCell(5, 5), "*");
+    assertThat(result.isSolved(), is(false));
+    assertThat(result, is(instanceOf(FinishedGame.class)));
   }
 
   @Test
@@ -79,6 +81,28 @@ public class GameTestCase {
                                        + "|□|□|□|□|□|□|□|□|\n"
                                        + "|□|□|□|□|□|□|□|□|\n"
                                        + "|□|□|□|□|□|□|□|□|\n"));
+  }
+
+  @Test
+  public void hitCellWitah2AdjacentMines() {
+    Cell[][] testGrid = createTestGrid();
+    testGrid[0][0] = new Mine(new Position(1, 2));
+    testGrid[1][1] = new MineAdjacentCell(((byte) 1), new Position(1, 1));
+    testGrid[1][0] = new MineAdjacentCell(((byte) 1), new Position(1, 0));
+    testGrid[0][1] = new MineAdjacentCell(((byte) 1), new Position(0, 1));
+
+    DefaultGame game = new DefaultGame(id, testGrid);
+    Game newGameStatus = game.revealCell(1, 1);
+
+    assertRevealedCell(newGameStatus.getCell(1, 1), "1");
+    assertThat(newGameStatus.print(), is("|□|□|□|□|□|□|□|□|\n"
+                                           + "|□|1|□|□|□|□|□|□|\n"
+                                           + "|□|□|□|□|□|□|□|□|\n"
+                                           + "|□|□|□|□|□|□|□|□|\n"
+                                           + "|□|□|□|□|□|□|□|□|\n"
+                                           + "|□|□|□|□|□|□|□|□|\n"
+                                           + "|□|□|□|□|□|□|□|□|\n"
+                                           + "|□|□|□|□|□|□|□|□|\n"));
   }
 
   private Cell[][] createTestGrid() {

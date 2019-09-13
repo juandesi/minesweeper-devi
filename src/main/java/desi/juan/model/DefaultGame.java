@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import desi.juan.model.cell.Cell;
+import desi.juan.model.error.RevealedMineException;
 
 public class DefaultGame extends Game {
 
@@ -14,12 +15,16 @@ public class DefaultGame extends Game {
 
   @Override
   public Game revealCell(int x, int y) {
-    DefaultGame result = grid[x][y].reveal(this);
-    if (result.isSolved()) {
-      // do something when the game is finished!
-      return new FinishedGame(result);
+    try {
+      DefaultGame result = grid[x][y].reveal(this);
+      if (result.isSolved()) {
+        // do something when the game is finished!
+        return new FinishedGame(result);
+      }
+      return result;
+    } catch (RevealedMineException e) {
+      return new FinishedGame(this);
     }
-    return result;
   }
 
   @Override
