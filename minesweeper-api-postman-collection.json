@@ -1,0 +1,189 @@
+{
+	"info": {
+		"_postman_id": "10e48dde-68ef-4fae-acfa-57cce735d3c8",
+		"name": "Minesweeper API HTTP client",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Games",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://minesweeper-devi.herokuapp.com/games",
+					"protocol": "https",
+					"host": [
+						"minesweeper-devi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"games"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Game",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://minesweeper-devi.herokuapp.com/games?level=EASY",
+					"protocol": "https",
+					"host": [
+						"minesweeper-devi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"games"
+					],
+					"query": [
+						{
+							"key": "level",
+							"value": "EASY"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Game of ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://minesweeper-devi.herokuapp.com/games/0",
+					"protocol": "https",
+					"host": [
+						"minesweeper-devi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"games",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View Game Grid ",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"x\": 1,\n\t\"y\": 2\n}"
+				},
+				"url": {
+					"raw": "https://minesweeper-devi.herokuapp.com/games/0/view",
+					"protocol": "https",
+					"host": [
+						"minesweeper-devi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"games",
+						"0",
+						"view"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reveal Cell of Game",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"x\": 1,\n\t\"y\": 2\n}"
+				},
+				"url": {
+					"raw": "https://minesweeper-devi.herokuapp.com/games/0/reveal",
+					"protocol": "https",
+					"host": [
+						"minesweeper-devi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"games",
+						"0",
+						"reveal"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Save Game",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://minesweeper-devi.herokuapp.com/games/0/save",
+					"protocol": "https",
+					"host": [
+						"minesweeper-devi",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"games",
+						"0",
+						"save"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "f69bdac4-f2e1-4dfd-af5f-e612a159750d",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "bb30c17c-7bb1-480c-a6e3-67000b8510a4",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

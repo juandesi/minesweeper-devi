@@ -1,0 +1,116 @@
+#%RAML 1.0
+title: Minesweeper
+
+/games:
+  get:
+    description: returns all the games ids and status
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                {
+                  "id": 1,
+                  "status": "finished"
+                }
+              }
+  post:
+    description: creates a new game and returns it's ID
+    queryParameters:
+      level?:
+        type: enum: [ EASY, MEDIUM, HARD]
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "id": 1
+              }
+      500:
+
+  /{id}:
+    uriParameters:
+      id: number
+    get:
+      description: returns the game with provided URI param ID.
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "status": "started",
+                  "id": 0,
+                    [
+                      {
+                        "type": "mine-adjacent",
+                        "number": 1,
+                        "position": {
+                          "x": 1,
+                          "y": 6
+                        }
+                      },
+                      {
+                        "type": "alone",
+                        "position": {
+                          "x": 1,
+                          "y": 7
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "type": "mine-adjacent",
+                        "number": 2,
+                        "position": {
+                          "x": 5,
+                          "y": 6
+                        }
+                      },
+                      {
+                        "type": "alone",
+                        "position": {
+                          "x": 5,
+                          "y": 7
+                        }
+                      }
+                    ]
+                  ]
+                }
+        404:
+          body:
+            application/json:
+              example: |
+                {
+                  message: "Game with id [13] not found"
+                }
+    /view:
+      get:
+        description:  Returns a pretty format representation of the game
+    /reveal:
+      put:
+        description:  reveals a cell in the grid of the game changing the state of it.
+        body:
+          application/json:
+            example: |
+                {
+                  "x": 1,
+                  "y": 5
+                }
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {
+                    "message": "sucessfully revealed cell in position [1, 5]"
+                  }
+          400:
+            body:
+              application/json:
+                example: |
+                  {
+                    "message": "invalid position [-1, 100000398] in game grid"
+                  }
