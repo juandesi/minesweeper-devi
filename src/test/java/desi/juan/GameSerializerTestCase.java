@@ -17,6 +17,7 @@ import desi.juan.model.Position;
 import desi.juan.model.cell.Cell;
 import desi.juan.model.cell.Mine;
 import desi.juan.model.cell.MineAdjacentCell;
+import desi.juan.model.cell.RevealedCell;
 import desi.juan.persistence.GameSerializer;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
@@ -53,8 +54,9 @@ public class GameSerializerTestCase {
     String defaultGame = getResourceAsString("finished.json");
     Game deserialized = serializer.deserialize(defaultGame);
     assertThat(deserialized.getId(), equalTo(finished.getId()));
-    assertThat(deserialized.getCell(1, 1), is(instanceOf(MineAdjacentCell.class)));
-    assertThat(deserialized.getCell(1, 0), is(instanceOf(Mine.class)));
+    assertThat(deserialized.isFinished(), is(true));
+    assertThat(deserialized.isSolved(), is(false));
+    assertThat(deserialized.getCell(1, 0), is(instanceOf(RevealedCell.class)));
   }
 
   private String getResourceAsString(String name) {
